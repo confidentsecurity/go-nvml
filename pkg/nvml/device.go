@@ -2846,12 +2846,14 @@ func (device nvmlDevice) GetConfComputeGpuCertificate() (ConfComputeGpuCertifica
 }
 
 // nvml.DeviceGetConfComputeGpuAttestationReport()
-func (l *library) DeviceGetConfComputeGpuAttestationReport(device Device) (ConfComputeGpuAttestationReport, Return) {
-	return device.GetConfComputeGpuAttestationReport()
+func (l *library) DeviceGetConfComputeGpuAttestationReport(device Device, nonce [32]byte) (ConfComputeGpuAttestationReport, Return) {
+	return device.GetConfComputeGpuAttestationReport(nonce)
 }
 
-func (device nvmlDevice) GetConfComputeGpuAttestationReport() (ConfComputeGpuAttestationReport, Return) {
-	var gpuAtstReport ConfComputeGpuAttestationReport
+func (device nvmlDevice) GetConfComputeGpuAttestationReport(nonce [32]byte) (ConfComputeGpuAttestationReport, Return) {
+	var gpuAtstReport = ConfComputeGpuAttestationReport{
+		Nonce: nonce,
+	}
 	ret := nvmlDeviceGetConfComputeGpuAttestationReport(device, &gpuAtstReport)
 	return gpuAtstReport, ret
 }
