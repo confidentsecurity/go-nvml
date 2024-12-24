@@ -2846,11 +2846,21 @@ func (device nvmlDevice) GetConfComputeGpuCertificate() (ConfComputeGpuCertifica
 }
 
 // nvml.DeviceGetConfComputeGpuAttestationReport()
-func (l *library) DeviceGetConfComputeGpuAttestationReport(device Device, nonce []byte) (ConfComputeGpuAttestationReport, Return) {
-	return device.GetConfComputeGpuAttestationReport(nonce)
+func (l *library) DeviceGetConfComputeGpuAttestationReport(device Device) (ConfComputeGpuAttestationReport, Return) {
+	return device.GetConfComputeGpuAttestationReport()
 }
 
-func (device nvmlDevice) GetConfComputeGpuAttestationReport(nonce []byte) (ConfComputeGpuAttestationReport, Return) {
+func (device nvmlDevice) GetConfComputeGpuAttestationReport() (ConfComputeGpuAttestationReport, Return) {
+	var gpuAtstReport ConfComputeGpuAttestationReport
+	ret := nvmlDeviceGetConfComputeGpuAttestationReport(device, &gpuAtstReport)
+	return gpuAtstReport, ret
+}
+
+func (l *library) DeviceGetConfComputeGpuAttestationReportWithNonce(device Device, nonce []byte) (ConfComputeGpuAttestationReport, Return) {
+	return device.GetConfComputeGpuAttestationReportWithNonce(nonce)
+}
+
+func (device nvmlDevice) GetConfComputeGpuAttestationReportWithNonce(nonce []byte) (ConfComputeGpuAttestationReport, Return) {
 	var gpuAtstReport ConfComputeGpuAttestationReport
 	copy(gpuAtstReport.Nonce[:], nonce)
 	ret := nvmlDeviceGetConfComputeGpuAttestationReport(device, &gpuAtstReport)
