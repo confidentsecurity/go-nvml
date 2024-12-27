@@ -2861,6 +2861,9 @@ func (l *library) DeviceGetConfComputeGpuAttestationReportWithNonce(device Devic
 }
 
 func (device nvmlDevice) GetConfComputeGpuAttestationReportWithNonce(nonce []byte) (ConfComputeGpuAttestationReport, Return) {
+	if len(nonce) != CC_GPU_CEC_NONCE_SIZE {
+		return ConfComputeGpuAttestationReport{}, ERROR_INVALID_ARGUMENT
+	}
 	var gpuAtstReport ConfComputeGpuAttestationReport
 	copy(gpuAtstReport.Nonce[:], nonce)
 	ret := nvmlDeviceGetConfComputeGpuAttestationReport(device, &gpuAtstReport)
